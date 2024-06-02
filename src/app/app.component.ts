@@ -41,6 +41,8 @@ export class AppComponent {
 
   spinner: boolean = false;
 
+  textareaApears: boolean = true;
+
   public async button() {
     if(this.state === 'start') {
       if(this.first) {
@@ -67,6 +69,7 @@ export class AppComponent {
       this.askOpenWhys();
       this.state = 'selectopenwhy';
       this.question = '';
+      this.textareaApears = false;
     }
   }
 
@@ -78,6 +81,7 @@ export class AppComponent {
     this.question = '';
     this.selectQuestion = [];
     this.faireSynthese = true;
+    this.textareaApears = true;
   }
 
   private async newBranche() {

@@ -11,10 +11,10 @@
   </select>
 
 
-  <textarea class="form-control w-100" [(ngModel)]="question" [disabled]="spinner"></textarea>
+  <textarea *ngIf="textareaApears" class="form-control w-100" [(ngModel)]="question" [disabled]="spinner"></textarea>
 
   <div class="mt-3 text-center">
-    <button (click)="button()" class="btn btn-success" [disabled]="spinner">Envoyer</button>
+    <button (click)="button()" class="btn btn-success" [disabled]="spinner || question.length < 2">Envoyer</button>
 
     <button *ngIf="faireSynthese" (click)="doSynthese()" class="btn btn-warning" [disabled]="spinner">Faire une synthèse
       ?</button>

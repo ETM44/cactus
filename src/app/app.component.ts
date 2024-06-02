@@ -43,6 +43,8 @@ export class AppComponent {
 
   textareaApears: boolean = true;
 
+  resume: any[] = [];
+
   public async button() {
     if(this.state === 'start') {
       if(this.first) {
@@ -51,6 +53,8 @@ export class AppComponent {
         this.first = false;
       }
       
+      this.resume.push({ open: this.question, closes: [] });
+
       await this.newBranche();
       this.askCloseWhy(this.count--);
       this.state = 'closewhy';
@@ -71,10 +75,15 @@ export class AppComponent {
       this.question = '';
       this.textareaApears = false;
     }
+
+    console.log(this.resume);
   }
 
   public async selection(event: any) {
     this.question = event.target.value;
+
+    this.resume.push({ open: this.question, closes: [] });
+
     await this.newBranche();
     this.askCloseWhy(this.count--);
     this.state = 'closewhy';
@@ -124,6 +133,8 @@ export class AppComponent {
 
   private saveCloseWhy() {
     this.answers += ' ' + this.closewhys[this.count] + ' ' + this.question;
+  
+    this.resume[this.resume.length - 1].closes.push({ question: this.closewhys[this.count], answer: this.question});
   }
 
   private askOpenWhys() {

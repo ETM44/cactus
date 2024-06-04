@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import MistralClient from '@mistralai/mistralai';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -15,34 +15,28 @@ import MistralClient from '@mistralai/mistralai';
 export class AppComponent {
   title = 'cactus';
 
-  client = new MistralClient("d7lOwbRTg8TjSw5h3FiOxCnSHjZKgjst");
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //
+  //  Replace "environment.api_token" with a mistral token.
+  //
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  client = new MistralClient(environment.api_token);
 
   question = '';
-
   message = '';
-
   answers: string = '';
-
   closewhys: string[] = [];
   openwhys: string[] = [];
   count = 0;
   state = "start";
-
   synthese: string = '';
-
   first: boolean = true;
   fistQuestion: string = '';
-
   selectQuestion: string[] = [];
-
   faireSynthese: boolean = false;
-
   instruction: string = 'Posez une question';
-
   spinner: boolean = false;
-
   textareaApears: boolean = true;
-
   resume: any[] = [];
 
   public async button() {
@@ -113,7 +107,6 @@ export class AppComponent {
     }
 
     this.spinner = false;
-
     this.saveAnswers(value);
   }
 
@@ -122,8 +115,6 @@ export class AppComponent {
     this.closewhys = JSON.parse(answers).closewhy;
     this.count = this.closewhys.length;
     this.openwhys = JSON.parse(answers).openwhy;
-
-
   }
 
   private askCloseWhy(count: number) {
@@ -132,8 +123,7 @@ export class AppComponent {
   }
 
   private saveCloseWhy() {
-    this.answers += ' ' + this.closewhys[this.count] + ' ' + this.question;
-  
+    this.answers += ' ' + this.closewhys[this.count] + ' ' + this.question; 
     this.resume[this.resume.length - 1].closes.push({ question: this.closewhys[this.count], answer: this.question});
   }
 
@@ -149,7 +139,7 @@ export class AppComponent {
 
     const chatStreamResponse = this.client.chatStream({
       model: "mistral-small",
-      messages: [{ role: "user", content: "Peux tu répondre à la question" + '"' + this.fistQuestion + '"' + "sous forme de synthèse en sachant que j'ai donné les réponse suivante à ces questions : " + this.answers + ' Ensuite tu fera une critique de cette synthèse en appuyant tes propos avec des sources. Fait un texte agréable à lire.'}],
+      messages: [{ role: "user", content: "Peux tu répondre à la question" + '"' + this.fistQuestion + '"' + "sous forme de synthèse courte et concise en sachant que j'ai donné les réponse suivante à ces questions : " + this.answers + ' Ensuite tu fera une critique de cette synthèse en appuyant tes propos avec des sources. Fait un texte agréable à lire.'}],
     });
     
     console.log("Chat Stream:");
@@ -164,7 +154,6 @@ export class AppComponent {
     }
 
     this.spinner = false;
-
     this.synthese = value;
   }
 
